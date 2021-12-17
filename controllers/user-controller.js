@@ -61,6 +61,28 @@ const userController = {
         let dbUserData = await User.updateMany({ friends: params.id }, { $pull: { friends: params.id }});
 
         res.json(dbUserData);
+    },
+
+    async addFriend({ params }, res) {
+        let dbUserData = await User.findByIdAndUpdate(params.userId, { $push: { friends: params.friendId }}, { new: true });
+
+        if (!dbUserData) {
+            res.status(404);
+            return;
+        }
+
+        res.json(dbUserData);
+    },
+
+    async deleteFriend({ params }, res) {
+        let dbUserData = await User.findByIdAndUpdate(params.userId, { $pull: { friends: params.friendId }}, { new: true });
+
+        if (!dbUserData) {
+            res.status(404);
+            return;
+        }
+
+        res.json(dbUserData);
     }
 }
 
