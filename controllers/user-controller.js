@@ -3,7 +3,7 @@ const { User } = require('../models');
 const userController = {
     // get all users
     async getAllUsers(req, res) {
-        let dbUserData = await User.find({}).populate({path: 'friends'});
+        let dbUserData = await User.find({}).populate({ path: 'friends' });
         
         if (!dbUserData) {
             res.status(404);
