@@ -10,7 +10,8 @@ const ReactionSchema = new Schema(
         reactionBody: {
             type: String,
             required: true,
-            max: () => reactionBody.length < 280
+            minlength: 1,
+            maxlength: 280
         },
         user: {
             type: Schema.Types.ObjectId,
@@ -29,8 +30,8 @@ const ThoughtSchema = new Schema(
         thoughtText: {
             type: String,
             required: true,
-            min: () => thoughtText.length > 1,
-            max: () => thoughtText.length < 280
+            minlength: 1,
+            maxlength: 280
         },
         createdAt: {
             type: Date,
