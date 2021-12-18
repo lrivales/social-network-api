@@ -14,8 +14,12 @@ const userController = {
     // get user by id
     async getUserById({ params }, res) {
         try {
-            let dbUserData = await User.findById(params.id).populate({ path: 'friends' });    
-            res.json(dbUserData);
+            let dbUserData = await User.findById(params.id).populate({ path: 'friends' });  
+            if (dbUserData) {
+                res.json(dbUserData);
+            } else {
+                res.status(404).json({ message: 'User not found!' })
+            }
         } catch (error) {
             res.status(404).json(error);
         }
@@ -35,7 +39,11 @@ const userController = {
     async updateUser({ params, body }, res) {
         try {
             let dbUserData = await User.findByIdAndUpdate(params.id, body, { new: true, runValidators: true });
-            res.json(dbUserData);
+            if (dbUserData) {
+                res.json(dbUserData);
+            } else {
+                res.status(404).json({ message: 'User not found!' });
+            }
         } catch (error) {
             res.status(404).json(error);
         }
@@ -60,7 +68,11 @@ const userController = {
     async addFriend({ params }, res) {
         try {
             let dbUserData = await User.findByIdAndUpdate(params.userId, { $push: { friends: params.friendId }}, { new: true });
-            res.json(dbUserData);
+            if (dbUserData) {
+                res.json(dbUserData);
+            } else {
+                res.status(404).json({ message: 'User not found!' })
+            }
         } catch (error) {
             res.status(404).json(error);
         }
@@ -69,7 +81,11 @@ const userController = {
     async deleteFriend({ params }, res) {
         try {
             let dbUserData = await User.findByIdAndUpdate(params.userId, { $pull: { friends: params.friendId }}, { new: true });
-            res.json(dbUserData);    
+            if (dbUserData) {
+                res.json(dbUserData);    
+            } else {
+                res.status(404).json({ message: 'User not found!' })
+            }
         } catch (error) {
             res.status(404).json(error);
         }
