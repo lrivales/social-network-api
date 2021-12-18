@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Thought } = require('../models');
 
 const userController = {
     // get all users
@@ -47,6 +47,7 @@ const userController = {
             let deletedUser = await User.findByIdAndRemove(params.id);
             if (deletedUser) {
                 let dbUserData = await User.updateMany({ friends: params.id }, { $pull: { friends: params.id }});
+                let dbThoughtData = await Thought.deleteMany({ user: deletedUser._id });
                 res.json(dbUserData);
             } else {
                 res.status(404).json({ message: 'User not found!'});
